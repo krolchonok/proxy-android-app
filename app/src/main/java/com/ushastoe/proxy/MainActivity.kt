@@ -1,6 +1,7 @@
 package com.ushastoe.proxy
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MotionEvent
 import android.widget.Button
@@ -9,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -24,10 +26,9 @@ class MainActivity : AppCompatActivity() {
 
         val textView = findViewById<TextView>(R.id.infotext)
         textView.text = checkproxy()
-
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "ResourceAsColor")
     private fun registercallback() {
         val buttonsend = findViewById<Button>(R.id.send)
         val inputtext = findViewById<EditText>(R.id.proxytext)
@@ -93,6 +94,12 @@ class MainActivity : AppCompatActivity() {
             inputtext.setText("10.0.0.10")
             inputtext.setSelection(inputtext.length())
         }
+
+//        button3128.setBackgroundColor(R.color.buttonPrimary)
+//        button80.setBackgroundColor(R.color.buttonPrimary)
+//        buttonempty.setBackgroundColor(R.color.buttonPrimary)
+//        proxyipbutton.setBackgroundColor(R.color.buttonPrimary)
+//        buttonsend.setBackgroundColor(R.color.buttonPrimary)
     }
 
     private fun replacePort(originalAddress: String, newPort: Int): String {
