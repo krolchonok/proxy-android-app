@@ -45,6 +45,12 @@ class MainActivity : AppCompatActivity() {
             false
         }
 
+        buttonsend.setOnLongClickListener {
+            finishAffinity()
+
+            true
+        }
+
         buttonsend.setOnClickListener {
             if (checkportinproxy(inputtext.text.toString())) {
                 runCommand("su -c settings put global http_proxy ${inputtext.text}")
