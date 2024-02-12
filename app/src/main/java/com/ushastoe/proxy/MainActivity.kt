@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.Gravity
-import android.view.MenuItem
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.EditText
@@ -54,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         clearbutton.setOnClickListener {
             list.clear()
             list += "10.0.0.10"
-            generate_button(list ?: return@setOnClickListener)
+            generate_button(list)
             Toast.makeText(this, "Список очищен", Toast.LENGTH_SHORT).show()
             saveListProxy(list)
         }
@@ -89,6 +88,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun registercallback() {
         val buttonsend = findViewById<Button>(R.id.send)
         val inputtext = findViewById<EditText>(R.id.proxytext)
@@ -185,21 +185,6 @@ class MainActivity : AppCompatActivity() {
             return savedText.split(";")
         }
         return null
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        // Завершаем активность при нажатии кнопки назад
-        finish()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Для обработки кнопки "назад" в ActionBar
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun runCommandWithAnswer(cmd: String): String? {
