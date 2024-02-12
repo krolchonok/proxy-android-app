@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Proxy" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimaryDark">@color/primary</item>
+        <item name="android:navigationBarColor">@color/primary</item>
     </style>
 
     <style name="Theme.Proxy" parent="Base.Theme.Proxy" />
