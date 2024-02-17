@@ -23,8 +23,12 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: List
-      run: ls -la
-    - name: ls
-      run: |
-        echo $(ls ./app/build/outputs/apk/release)
+    - name: Create Release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ./app/build/outputs/apk/release/app-release-unsigned.apk
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "file for upload in flipper"
+        prerelease: false
