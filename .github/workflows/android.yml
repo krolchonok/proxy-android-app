@@ -27,10 +27,4 @@ jobs:
       run: ls -la
     - name: ls
       run: |
-        echo $(ls ./app)
-        echo "\n\n"
-        echo $(ls ./app/build)
-        echo "\n\n"
-        echo $(ls ./app/build/outputs)
-        echo "\n\n"
-        echo $(ls ./app/build/outputs/apk)
+        echo $(ls ./app/build/outputs/apk/release)
