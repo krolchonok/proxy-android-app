@@ -24,4 +24,10 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: List
-      run: echo $(ls -la)
+      run: ls -la
+    - name: ls
+      run: |
+        ls ./app
+        ls ./app/build
+        ls ./app/build/outputs
+        ls ./app/build/outputs/apk
