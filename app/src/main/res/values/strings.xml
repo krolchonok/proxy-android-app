@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">proxy</string>
+    <string name="app_name">Proxy Changer</string>
+    <string name="perf_name">prefs_proxy</string>
 </resources>
