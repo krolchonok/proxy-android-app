@@ -1,6 +1,7 @@
 package com.ushastoe.proxy
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.MotionEvent
@@ -21,45 +22,18 @@ import java.io.InputStreamReader
 class MainActivity : AppCompatActivity() {
     private val namesetting = "prefs_proxy"
 
-    @SuppressLint("ResourceType", "WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DynamicColors.applyToActivityIfAvailable(this@MainActivity)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(R.layout.activity_main)
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        DynamicColors.applyToActivitiesIfAvailable(application)
-
         registercallback()
-
-        findViewById<TextView>(R.id.infotext).text = checkproxy()
-        val list = getListSaveProxy()?.toMutableList()
-        generateButton(list ?: return)
-
-         findViewById<Button>(R.id.save).setOnClickListener {
-            if (findViewById<EditText>(R.id.proxytext).text.toString() in list) {
-                Toast.makeText(this, "IP уже был сохранен", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            } else {
-                Toast.makeText(this, "IP сохранен", Toast.LENGTH_SHORT).show()
-                list += findViewById<EditText>(R.id.proxytext).text.toString()
-                generateButton(list)
-                saveListProxy(list)
-            }
-        }
-        findViewById<Button>(R.id.clear).setOnClickListener {
-            list.clear()
-            list += "10.0.0.10"
-            generateButton(list)
-            Toast.makeText(this, "Список очищен", Toast.LENGTH_SHORT).show()
-            saveListProxy(list)
-        }
     }
 
 
     private fun generateButton(list: List<String>) {
     findViewById<LinearLayout>(R.id.ip_layout).removeAllViews()
-
-
         val themeWrapper = ContextThemeWrapper(
             this,
             R.style.MyButton
@@ -81,11 +55,36 @@ class MainActivity : AppCompatActivity() {
         editor.apply()
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "CutPasteId")
     private fun registercallback() {
         val buttonsend = findViewById<Button>(R.id.send)
         val inputtext = findViewById<EditText>(R.id.proxytext)
         val textView = findViewById<TextView>(R.id.infotext)
+
+        textView.text = checkproxy()
+
+        val list = getListSaveProxy()?.toMutableList()
+        generateButton(list ?: return)
+
+        findViewById<Button>(R.id.save).setOnClickListener {
+            if (findViewById<EditText>(R.id.proxytext).text.toString() in list) {
+                Toast.makeText(this, "IP уже был сохранен", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } else {
+                Toast.makeText(this, "IP сохранен", Toast.LENGTH_SHORT).show()
+                list += findViewById<EditText>(R.id.proxytext).text.toString()
+                generateButton(list)
+                saveListProxy(list)
+            }
+        }
+
+        findViewById<Button>(R.id.clear).setOnClickListener {
+            list.clear()
+            list += "10.0.0.10"
+            generateButton(list)
+            Toast.makeText(this, "Список очищен", Toast.LENGTH_SHORT).show()
+            saveListProxy(list)
+        }
 
         inputtext.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
@@ -113,8 +112,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
         findViewById<Button>(R.id.b3128).setOnClickListener {
+            println("ebat")
             val modifiedAddress = replacePort(inputtext.text.toString(), 3128)
             inputtext.setText(modifiedAddress)
             inputtext.setSelection(inputtext.length())
