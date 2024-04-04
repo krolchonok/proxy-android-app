@@ -91,14 +91,20 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.save).setOnClickListener {
             if (list != null) {
-                if (findViewById<EditText>(R.id.proxytext).text.toString() in list) {
+                val text = findViewById<EditText>(R.id.proxytext).text
+                if(text.isNullOrEmpty()) {
+                    Toast.makeText(this, "Пустой текст", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                if (text.toString() in list) {
                     Toast.makeText(this, "IP уже был сохранен", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 } else {
                     Toast.makeText(this, "IP сохранен", Toast.LENGTH_SHORT).show()
-                    list += findViewById<EditText>(R.id.proxytext).text.toString()
+                    list += text.toString()
                     generateButton(list)
                     saveListProxy(list)
+                    return@setOnClickListener
                 }
             }
         }
