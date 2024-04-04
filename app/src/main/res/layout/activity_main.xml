@@ -44,68 +44,74 @@
             android:drawableEnd="@android:drawable/ic_menu_close_clear_cancel"
             android:hint="Введите IP"/>
 
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
         <Button
             android:id="@+id/send"
-            style="@style/MyButton"
+            style="@style/CustomButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:padding="0dp"
-            android:text="✅"
-            android:layout_marginEnd="2dp"
-            android:layout_marginStart="2.5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="2.5dp"
+            android:text="✅ Применить"/>
 
         <Button
             android:id="@+id/save"
-            style="@style/MyButton"
+            style="@style/CustomButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:padding="0dp"
-            android:text="💾"
-            android:layout_marginStart="2dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"            />
-
+            android:layout_marginStart="2.5dp"
+            android:layout_marginEnd="5dp"
+            android:text="💾 Сохранить"/>
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/b3128"
-            style="@style/MyButton"
+            style="@style/CustomButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="0dp"
+            android:layout_marginStart="5dp"
             android:layout_marginEnd="2.5dp"
             android:text="3128" />
         <Button
             android:id="@+id/b80"
-            style="@style/MyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="2.5dp"
-            android:layout_marginRight="2.5dp"
-            android:padding="0dp"
-            android:text="80" />
-
-        <Button
-            android:id="@+id/bclear"
-            style="@style/MyButton"
+            style="@style/CustomButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="0dp"
             android:layout_marginStart="2.5dp"
-            android:text="-" />
+            android:layout_marginEnd="5dp"
+            android:text="80" />
+
+        <Button
+            android:id="@+id/bclear"
+            style="@style/CustomButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="0dp"
+            android:layout_marginStart="2.5dp"
+            android:layout_marginEnd="5dp"
+            android:text="Выкл" />
     </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -122,7 +128,7 @@
                 android:textSize="15sp"/>
 
             <Button
-                style="@style/MyButton"
+                style="@style/CustomButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Очистить"

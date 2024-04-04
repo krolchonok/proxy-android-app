@@ -1,4 +1,15 @@
 <resources>
-    <string name="app_name">Proxy Changer</string>
+    <string name="app_name" translatable="false">Proxy Changer</string>
     <string name="perf_name">prefs_proxy</string>
+    <string name="enter_ip">Enter IP:</string>
+    <string name="saved_ip">Saved IP:</string>
+    <string name="clear_btn">Clear</string>
+    <string name="proxy_disable">Proxy disabled</string>
+    <string name="ip_saved">IP saved</string>
+    <string name="ip_cleared">IP list clear</string>
+    <string name="title">Remove saved IP</string>
+    <string name="supporting_text">Remove this IP from saved list?</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+
 </resources>

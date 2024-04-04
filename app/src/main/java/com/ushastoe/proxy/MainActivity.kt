@@ -1,7 +1,6 @@
 package com.ushastoe.proxy
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.MotionEvent
@@ -14,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.DynamicColors
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -21,37 +21,60 @@ import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
     private val namesetting = "prefs_proxy"
-
+    private val defaultIP = "10.0.0.10"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         DynamicColors.applyToActivityIfAvailable(this@MainActivity)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         setContentView(R.layout.activity_main)
 
         registercallback()
     }
 
-
-    private fun generateButton(list: List<String>) {
+    private fun generateButton(list: MutableList<String>?) {
     findViewById<LinearLayout>(R.id.ip_layout).removeAllViews()
         val themeWrapper = ContextThemeWrapper(
             this,
-            R.style.MyButton
+            R.style.CustomButtonStyle
         )
-        for (i in list) {
-            val button = MaterialButton(themeWrapper)
-            button.text = i
-            button.setOnClickListener {
-                findViewById<EditText>(R.id.proxytext).setText(i)
-                findViewById<EditText>(R.id.proxytext).setSelection(findViewById<EditText>(R.id.proxytext).length())
+        if (list != null) {
+            for (i in list) {
+                val button = MaterialButton(themeWrapper)
+                button.text = i
+                button.setOnClickListener {
+                    val inputText = findViewById<EditText>(R.id.proxytext)
+                    inputText.setText(i)
+                    inputText.setSelection(inputText.length())
+                }
+                button.setOnLongClickListener {
+                    if (button.text == "10.0.0.10") { return@setOnLongClickListener true }
+                    MaterialAlertDialogBuilder(this)
+                        .setTitle(resources.getString(R.string.title))
+                        .setMessage(resources.getString(R.string.supporting_text))
+                        .setNeutralButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
+                            list.remove(button.text)
+                            println(list)
+                            saveListProxy(list)
+                            generateButton(list)
+                        }
+                        .show()
+                    return@setOnLongClickListener true
+                }
+                findViewById<LinearLayout>(R.id.ip_layout).addView(button)
             }
-            findViewById<LinearLayout>(R.id.ip_layout).addView(button)
         }
     }
-    private fun saveListProxy(list: List<String>) {
+    private fun saveListProxy(list: MutableList<String>?) {
         val preferences = getSharedPreferences(namesetting, MODE_PRIVATE)
         val editor = preferences.edit()
-        editor.putString("proxy_last", list.joinToString(";"))
+        if (list != null) {
+            editor.putString("proxy_last", list.joinToString(";"))
+        }
         editor.apply()
     }
 
@@ -64,23 +87,28 @@ class MainActivity : AppCompatActivity() {
         textView.text = checkproxy()
 
         val list = getListSaveProxy()?.toMutableList()
-        generateButton(list ?: return)
+        generateButton(list)
 
         findViewById<Button>(R.id.save).setOnClickListener {
-            if (findViewById<EditText>(R.id.proxytext).text.toString() in list) {
-                Toast.makeText(this, "IP уже был сохранен", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            } else {
-                Toast.makeText(this, "IP сохранен", Toast.LENGTH_SHORT).show()
-                list += findViewById<EditText>(R.id.proxytext).text.toString()
-                generateButton(list)
-                saveListProxy(list)
+            if (list != null) {
+                if (findViewById<EditText>(R.id.proxytext).text.toString() in list) {
+                    Toast.makeText(this, "IP уже был сохранен", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                } else {
+                    Toast.makeText(this, "IP сохранен", Toast.LENGTH_SHORT).show()
+                    list += findViewById<EditText>(R.id.proxytext).text.toString()
+                    generateButton(list)
+                    saveListProxy(list)
+                }
             }
         }
 
+
         findViewById<Button>(R.id.clear).setOnClickListener {
-            list.clear()
-            list += "10.0.0.10"
+            list?.clear()
+            if (list != null) {
+                list += defaultIP
+            }
             generateButton(list)
             Toast.makeText(this, "Список очищен", Toast.LENGTH_SHORT).show()
             saveListProxy(list)
@@ -98,7 +126,6 @@ class MainActivity : AppCompatActivity() {
 
         buttonsend.setOnLongClickListener {
             finishAffinity()
-
             true
         }
 
@@ -113,7 +140,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.b3128).setOnClickListener {
-            println("ebat")
             val modifiedAddress = replacePort(inputtext.text.toString(), 3128)
             inputtext.setText(modifiedAddress)
             inputtext.setSelection(inputtext.length())
@@ -148,9 +174,9 @@ class MainActivity : AppCompatActivity() {
         var cmdresult: String? = runCommandWithAnswer("su -c settings get global http_proxy")
 
         cmdresult = if (cmdresult == ":0") {
-            "Прокси выключен"
+            "Прокси выключен\n"
         } else {
-            "Текущее прокси: \n$cmdresult"
+            "Текущее прокси:\n$cmdresult"
         }
         return cmdresult
     }
@@ -159,11 +185,11 @@ class MainActivity : AppCompatActivity() {
             Runtime.getRuntime().exec(cmd)
     }
 
-    private fun getListSaveProxy(): List<String>? {
+    private fun getListSaveProxy(): Array<String>? {
         val preferences = getSharedPreferences(namesetting, MODE_PRIVATE)
-        val savedText = preferences.getString("proxy_last", "10.0.0.10")
+        val savedText = preferences.getString("proxy_last", defaultIP)
         if (savedText != null) {
-            return savedText.split(";")
+             return savedText.split(";").toTypedArray()
         }
         return null
     }
